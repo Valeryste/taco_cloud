@@ -5,9 +5,13 @@ import com.example.taco_cloud.tacos.TacoOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import com.example.taco_cloud.tacos.Ingredient;
 
+import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +23,7 @@ public class DesignTacoController {
 
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = List.of(new Ingredient("FLTO", "Flout Tortilla", Ingredient.Type.WRAP),
+        List<Ingredient> ingredients = Arrays.asList(new Ingredient("FLTO", "Flout Tortilla", Ingredient.Type.WRAP),
                 new Ingredient("COTO", "Corn Tortilla", Ingredient.Type.WRAP),
                 new Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN),
                 new Ingredient("CARN", "Carnitas", Ingredient.Type.PROTEIN),
@@ -46,7 +50,11 @@ public class DesignTacoController {
     }
 
     @PostMapping
-    public String processTaco(Taco taco,@ModelAttribute TacoOrder tacoOrder){
+    public String processTaco(@Valid Taco taco, BindingResult bindingResult, @ModelAttribute TacoOrder tacoOrder){
+        if(bindingResult.hasErrors()){
+            return "design";
+        }
+
         tacoOrder.addTaco(taco);
         log.info("Processing taco: {}",taco);
 
