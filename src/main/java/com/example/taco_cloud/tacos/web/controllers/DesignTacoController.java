@@ -1,4 +1,4 @@
-package com.example.taco_cloud.tacos.web;
+package com.example.taco_cloud.tacos.web.controllers;
 
 import com.example.taco_cloud.tacos.Taco;
 import com.example.taco_cloud.tacos.TacoOrder;
